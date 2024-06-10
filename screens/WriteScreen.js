@@ -1,15 +1,37 @@
 import { useState } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { SafeAreaView, TextInput } from "react-native-web";
-import SocialScreen from "./SocialScreen";
+import { Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import * as ImagePicker from "expo-image-picker";
 
 const WriteScreen = ({navigation}) => {
 
     const [message, setMessage] = useState(""); 
     const [file, setFile] = useState(null);
+    const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 
     const postHandler = () =>{
         
+    }
+
+    const uploadImage = async () => {
+        if(!status?.granted){
+            const permission = await requestPermission();
+            if(!permission.granted){
+                return null;
+            }
+        }
+
+        const response = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: false,
+            quality: 1,
+            aspect: [1,1],
+        });
+        if(response.canceled){
+            console.log("canceled")
+            return;
+        }
+        console.log(response.assets[0].uri);
+        setFile(response.assets[0].uri);
     }
 
     return(
@@ -25,21 +47,20 @@ const WriteScreen = ({navigation}) => {
             {/*ㄴImage*/}
                 <View style={{flex:4}}>
                     {file === null ? 
-                        <TouchableOpacity style={styles.imageBox}>
+                        <TouchableOpacity style={styles.imageBox} onPress={uploadImage}>
                             <Text style={styles.imageText}>
                                 이미지 불러오기
                             </Text>
                         </TouchableOpacity>
                         :
-                        <Image source={file} style={styles.imageBox}>
-                        </Image>
+                        <Image source={{uri:file}} style={styles.imageBox}/>
                     }
                 </View>
 
             {/*ㄴText*/}
                 <View style={{flex:1}}>
                     <TextInput
-                        style={styles.textarea}
+                        style={styles.textBox}
                         value={message}
                         onChange={(e)=>setMessage(e.target.value)}
                         multiline={true}
@@ -59,8 +80,7 @@ const WriteScreen = ({navigation}) => {
                     <Text>취소</Text>
                 </TouchableOpacity>
             </View>
-        </SafeAreaView>
-        
+        </SafeAreaView>     
     )
 
 }
@@ -88,7 +108,7 @@ const styles = StyleSheet.create({
     },
     imageText:{
         color:'#aaa',
-        fontSize:'14',
+        fontSize:14,
     },
     imageBox:{
         flex:1,
@@ -100,7 +120,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
         justifyContent:'center'
     },  
-    textarea:{
+    textBox:{
         width: 300,
         borderWidth: 1,
         borderColor: '#888',

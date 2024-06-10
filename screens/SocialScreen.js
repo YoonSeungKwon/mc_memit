@@ -45,6 +45,9 @@ const SocialScreen = ({ navigation }) => {
 
       <View style={styles.header}>
         <Text style={styles.headerText}>Page Name</Text>
+        <TouchableOpacity onPress={()=>navigation.navigate("WriteScreen")}>
+          <Text>글쓰기</Text>
+        </TouchableOpacity>
       </View>
 
 
