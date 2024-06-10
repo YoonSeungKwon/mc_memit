@@ -1,15 +1,48 @@
 import { useState } from "react";
 import { Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
+import axios from "axios";
 
 const WriteScreen = ({navigation}) => {
 
+    const formData = new FormData();
     const [message, setMessage] = useState(""); 
     const [file, setFile] = useState(null);
     const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 
-    const postHandler = () =>{
-        
+
+    const postHandler = async() =>{
+
+        const data = {
+            'content':message
+        }
+
+        const fileUri = FileSystem.documentDirectory + 'selected_image.jpg';
+        await FileSystem.copyAsync({ from: file.uri, to: fileUri });
+
+        console.log(fileUri);
+
+        formData.append("dto", new Blob([JSON.stringify(data)], {type:"application/json"}))
+        formData.append("file", {
+                uri:fileUri,
+                name:"image.jpg",
+                type:file.mimeType, 
+        })
+
+        axios.post("http://43.202.127.16:8080/api/v1/posts", formData, {
+            headers: {
+                'Authorization': "test",
+                "Content-Type": 'multipart/form-data'
+            }
+        }).then((res)=>{
+            console.log(res);
+            alert("글을 등록하였습니다.")
+            navigation.navigate("SocialScreen");
+        }).catch((error)=>{
+            console.log(error)
+        })
+
     }
 
     const uploadImage = async () => {
@@ -25,13 +58,13 @@ const WriteScreen = ({navigation}) => {
             allowsEditing: false,
             quality: 1,
             aspect: [1,1],
+            base64:true
         });
         if(response.canceled){
             console.log("canceled")
             return;
         }
-        console.log(response.assets[0].uri);
-        setFile(response.assets[0].uri);
+        setFile(response.assets[0]);
     }
 
     return(
@@ -53,7 +86,7 @@ const WriteScreen = ({navigation}) => {
                             </Text>
                         </TouchableOpacity>
                         :
-                        <Image source={{uri:file}} style={styles.imageBox}/>
+                        <Image source={{uri:file.uri}} style={styles.imageBox}/>
                     }
                 </View>
 
@@ -64,7 +97,7 @@ const WriteScreen = ({navigation}) => {
                         value={message}
                         onChange={(e)=>setMessage(e.target.value)}
                         multiline={true}
-                        numberOfLines={5}
+                        rows={5}
                         placeholder={"내용을 입력하세요."}
                     />
                 </View>

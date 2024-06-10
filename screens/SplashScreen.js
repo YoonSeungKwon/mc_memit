@@ -3,14 +3,19 @@ import logo from "../assets/images/logo2.png";
 import { useEffect } from "react";
 import { router } from "expo-router";
 import SocialScreen from "./SocialScreen";
+import { useIsFocused } from "@react-navigation/native";
 
 const SplashScreen = ({navigation}) =>{
 
+    const isFocused = useIsFocused();
+
     useEffect(() => {
-        setTimeout(()=>{    
-            navigation.navigate('SocialScreen')
-        }, 2000)
-    }, []);
+        if(isFocused){
+            setTimeout(()=>{    
+                navigation.navigate('SocialScreen')
+            }, 2000)
+        }
+    }, [isFocused]);
 
     return(
         <View style={{alignItems:'center', justifyContent:'center', flex:1}}>
