@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import * as FileSystem from "expo-file-system";
 import axios from "axios";
 
 const WriteScreen = ({navigation}) => {
@@ -13,27 +12,20 @@ const WriteScreen = ({navigation}) => {
 
 
     const postHandler = async() =>{
-
         const data = {
             'content':message
         }
 
-        const fileUri = FileSystem.documentDirectory + 'selected_image.jpg';
-        await FileSystem.copyAsync({ from: file.uri, to: fileUri });
+        const blob = base64ToBlob(file.base64);
+        const image = new File([blob], 'image.jpg', { type: 'image/jpeg' });
 
-        console.log(fileUri);
-
+        formData.append("file", image);
         formData.append("dto", new Blob([JSON.stringify(data)], {type:"application/json"}))
-        formData.append("file", {
-                uri:fileUri,
-                name:"image.jpg",
-                type:file.mimeType, 
-        })
 
         axios.post("http://43.202.127.16:8080/api/v1/posts", formData, {
-            headers: {
-                'Authorization': "test",
-                "Content-Type": 'multipart/form-data'
+            headers:{
+                'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',
+                'Authorization':"test",
             }
         }).then((res)=>{
             console.log(res);
@@ -44,6 +36,15 @@ const WriteScreen = ({navigation}) => {
         })
 
     }
+
+    const base64ToBlob = (base64) => {
+        const byteCharacters = atob(base64);
+        const byteArray = new Uint8Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteArray[i] = byteCharacters.charCodeAt(i);
+        }
+        return new Blob([byteArray], { type: 'image/jpeg' });
+      };
 
     const uploadImage = async () => {
         if(!status?.granted){
