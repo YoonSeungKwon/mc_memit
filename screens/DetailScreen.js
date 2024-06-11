@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, Button } from 'react-native';
+import { StyleSheet, Text, View, Image, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, Button, TouchableOpacity } from 'react-native';
 import DateInput from '../component/DateInput'; // DateInput 컴포넌트를 불러옵니다.
 
 const DetailScreen = ({ route, navigation }) => {
@@ -43,15 +43,13 @@ const DetailScreen = ({ route, navigation }) => {
               </View>
               <Text style={styles.headerText}>Name's image!</Text>
               <Image
-                source={image}
+                source={{uri:image.file}}
                 style={styles.image}
               />
               <View style={styles.textBox}>
                 <DateInput 
-                  name={name} 
-                  setName={setName} 
-                  content={content} 
-                  setContent={setContent} 
+                  name={image.writer} 
+                  content={image.content} 
                   isEditing={isEditing} 
                   setIsEditing={setIsEditing} 
                 />
