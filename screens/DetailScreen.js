@@ -2,16 +2,32 @@ import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, Button, TouchableOpacity } from 'react-native';
 import DateInput from '../component/DateInput'; // DateInput 컴포넌트를 불러옵니다.
+import axios from 'axios';
 
 const DetailScreen = ({ route, navigation }) => {
   const { image } = route.params;
+  const [content, setContent] = useState(image.content);
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(()=>{
   },[]);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     // Save logic here
+    const data = {
+      content: content
+    }
+
+    axios.put(`http://43.202.127.16:8080/api/v1/posts/${image.postIdx}`, data, {
+      headers:{
+        'Authorization':'test'
+      }
+    }).then((res)=>{
+      console.log(res.data)
+    }).catch((error)=>{
+      console.log(error)
+    });
+
     setIsEditing(false);
   };
 
@@ -41,15 +57,17 @@ const DetailScreen = ({ route, navigation }) => {
                             <Text style={styles.buttonText}>Back</Text>
                 </TouchableOpacity>
               </View>
-              <Text style={styles.headerText}>Name's image!</Text>
+              <Text style={styles.headerText}>{image.writer} image!</Text>
               <Image
                 source={{uri:image.file}}
                 style={styles.image}
               />
               <View style={styles.textBox}>
                 <DateInput 
+                  date={image.createAt}
                   name={image.writer} 
-                  content={image.content} 
+                  content={content} 
+                  setContent={setContent} 
                   isEditing={isEditing} 
                   setIsEditing={setIsEditing} 
                 />

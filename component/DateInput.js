@@ -2,26 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 import moment from 'moment-timezone';
 
-const DateInput = ({ name, setName, content, setContent, isEditing, setIsEditing }) => {
-  const [date, setDate] = useState('');
+const DateInput = ({ date, name, content, isEditing, setContent, setIsEditing }) => {
 
-  useEffect(() => {
-    if (!isEditing) {
-      const currentTime = moment().tz('Asia/Seoul').format('YYYY.MM.DD a.hh:mm');
-      setDate(currentTime);
-    }
-  }, [isEditing]);
-
-  const handleSave = () => {
-    setIsEditing(false);
-    console.log('Name:', name);
-    console.log('Date:', date);
-    console.log('Content:', content);
-  };
-
-  const handleEdit = () => {
-    setIsEditing(true);
-  };
 
   return (
     <View style={styles.container}>
@@ -29,14 +11,12 @@ const DateInput = ({ name, setName, content, setContent, isEditing, setIsEditing
         <TextInput
           style={styles.nameText}
           value={name}
-          onChangeText={setName}
           placeholder="Name"
-          editable={isEditing}
+          editable={false}
         />
         <TextInput
           style={styles.dateText}
           value={date}
-          onChangeText={setDate}
           placeholder="Date"
           editable={false}
         />
