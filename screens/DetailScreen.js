@@ -8,7 +8,6 @@ const DetailScreen = ({ route, navigation }) => {
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(()=>{
-    console.log(route)
   },[]);
 
   const handleSave = () => {
@@ -38,28 +37,33 @@ const DetailScreen = ({ route, navigation }) => {
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={styles.contentContainer}>
               <View style={styles.backButtonContainer}>
-                <Button title="< back" onPress={() => navigation.goBack()} />
+                <TouchableOpacity style={styles.button} onPress={() =>  navigation.goBack()}>
+                            <Text style={styles.buttonText}>Back</Text>
+                </TouchableOpacity>
               </View>
-              <Text>App is open soohyun 화이팅!</Text>
+              <Text style={styles.headerText}>Name's image!</Text>
               <Image
-                source={image.file}
+                source={image}
                 style={styles.image}
               />
               <View style={styles.textBox}>
                 <DateInput 
-                  name={image.writer} 
-                  // setName={setName} 
-                  content={image.content} 
-                  // setContent={setContent} 
+                  name={name} 
+                  setName={setName} 
+                  content={content} 
+                  setContent={setContent} 
                   isEditing={isEditing} 
                   setIsEditing={setIsEditing} 
                 />
               </View>
-              <View style={styles.buttonContainer}>
-                {isEditing ? 
-                  (<Button title="Save    " onPress={handleSave} />) 
-                  : (<Button title="Edit    " onPress={handleEdit} />)}
-              </View>
+              <View style={styles.editButtonContainer}>
+              {isEditing ? (
+                  <TouchableOpacity style={styles.button} onPress={handleSave}>
+                        <Text style={styles.buttonText}>Save</Text>
+                  </TouchableOpacity>) 
+                  : (<TouchableOpacity style={styles.button} onPress={handleEdit}>
+                        <Text style={styles.buttonText}>Edit</Text>
+                      </TouchableOpacity>)}</View>
             </View>
           </TouchableWithoutFeedback>
           <StatusBar style="auto" />
@@ -72,18 +76,27 @@ const DetailScreen = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: '100%',
     backgroundColor: 'rgba(0, 0, 0, 0.28)',
+    //backgroundColor: '#111121',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  scrollContainer: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 20,
+  headerText: {
+    color: '#ffff', // 글자 색 변경
+    fontSize: 18,
+    fontWeight: 'light',
+    fontFamily: 'Inter',
   },
   backButtonContainer: {
     alignSelf: 'flex-start',
+    //backgroundColor: '#fff',
+    marginLeft: 5,
+    marginTop: 10,
+  },
+  editButtonContainer: {
+    alignSelf: 'flex-end',
+    //backgroundColor: '#fff',
     marginLeft: 5,
     marginTop: 10,
   },
@@ -101,18 +114,17 @@ const styles = StyleSheet.create({
   textBox: {
     width: 350,
     padding: 0,
-    backgroundColor: '#ffff',
+    backgroundColor: '#fff',
     borderRadius: 10,
     marginTop: 10,
     alignItems: 'flex-start',
   },
-  buttonContainer: {
-    position: 'relative',
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    width: '100%',
-    marginTop: 10,
-  },
+  buttonText: {
+    color: '#0075eb', // 글자 색 변경
+    fontSize: 18,
+    fontWeight: 'bold',
+    fontFamily: 'Inter',
+},
 });
 
 export default DetailScreen;

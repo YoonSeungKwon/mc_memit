@@ -11,6 +11,7 @@ const SocialScreen = ({ navigation }) => {
   const [post, setPost] = useState([]);
   const isFocused = useIsFocused();
 
+
   useEffect(()=>{
     if(isFocused){
       axios.get("http://43.202.127.16:8080/api/v1/posts"

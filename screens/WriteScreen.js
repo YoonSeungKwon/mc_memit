@@ -1,32 +1,34 @@
 import { useState } from "react";
-import { Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Image, Platform, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 
 const WriteScreen = ({navigation}) => {
 
-    const formData = new FormData();
     const [message, setMessage] = useState(""); 
     const [file, setFile] = useState(null);
     const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 
 
     const postHandler = async() =>{
+
         const data = {
-            'content':message
+            "content": message,
         }
+        
+        const formData = new FormData();
+        const name = file.uri.split('/').pop();
+        const type = file.mimeType || 'image/jpeg';
 
-        const blob = base64ToBlob(file.base64);
-        const image = new File([blob], 'image.jpg', { type: 'image/jpeg' });
-
-        formData.append("file", image);
-        formData.append("dto", new Blob([JSON.stringify(data)], {type:"application/json"}))
+    
+        formData.append("dto", {"string":JSON.stringify(data), type: "application/json"});
+        formData.append("file", {uri: file.uri, name: name, type: type})
 
         axios.post("http://43.202.127.16:8080/api/v1/posts", formData, {
             headers:{
-                'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',
+                'Content-Type': 'multipart/form-data',
                 'Authorization':"test",
-            }
+            },
         }).then((res)=>{
             console.log(res);
             alert("글을 등록하였습니다.")
@@ -37,14 +39,6 @@ const WriteScreen = ({navigation}) => {
 
     }
 
-    const base64ToBlob = (base64) => {
-        const byteCharacters = atob(base64);
-        const byteArray = new Uint8Array(byteCharacters.length);
-        for (let i = 0; i < byteCharacters.length; i++) {
-          byteArray[i] = byteCharacters.charCodeAt(i);
-        }
-        return new Blob([byteArray], { type: 'image/jpeg' });
-      };
 
     const uploadImage = async () => {
         if(!status?.granted){
@@ -59,12 +53,14 @@ const WriteScreen = ({navigation}) => {
             allowsEditing: false,
             quality: 1,
             aspect: [1,1],
-            base64:true
+            // base64:true
         });
         if(response.canceled){
             console.log("canceled")
             return;
         }
+        // console.log(response)
+
         setFile(response.assets[0]);
     }
 
@@ -96,7 +92,7 @@ const WriteScreen = ({navigation}) => {
                     <TextInput
                         style={styles.textBox}
                         value={message}
-                        onChange={(e)=>setMessage(e.target.value)}
+                        onChangeText={setMessage}
                         multiline={true}
                         rows={5}
                         placeholder={"내용을 입력하세요."}
