@@ -2,15 +2,15 @@ import React from 'react';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
 
-const Header = () => {
+const Header = ({navigation}) => {
   return (
     <View style={styles.Headercontainer}>
       <View style={styles.textContainer}>
-        <Text style={styles.headerText}>         Personal Page</Text>
+        <Text style={styles.headerText}>Personal Page</Text>
       </View>
       <TouchableOpacity 
         style={styles.button}
-        //onPress={()=>router.push('/mypage')}
+        onPress={()=>navigation.navigate('SettingScreen')}
       >
         <Text style={styles.buttonText}>☰</Text>
       </TouchableOpacity>

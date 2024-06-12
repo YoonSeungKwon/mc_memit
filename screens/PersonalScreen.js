@@ -5,22 +5,52 @@ import Header from './hook/Header';
 import MasonryList from '@react-native-seoul/masonry-list';
 import axios from 'axios';
 import { useIsFocused } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SocialScreen = ({ navigation }) => {
   
+  const [id, setId] = useState("");
   const [post, setPost] = useState([]);
   const isFocused = useIsFocused();
 
-
-  useEffect(()=>{
-    if(isFocused){
-      axios.get("http://43.202.127.16:8080/api/v1/posts"
+  const fetchData = async() =>{
+    try{
+      const fetchId = await AsyncStorage.getItem("id");
+      console.log(id)
+      await axios.get("http://43.202.127.16:8080/api/v1/posts/my",{
+        headers:{
+          'Authorization': fetchId
+        }
+      }
       ).then((res)=>{
         console.log(res);
         setPost(res.data);
       }).catch((error)=>{
         console.log(error);
       })
+    }catch(error){
+      console.log(error);
+    }
+  }
+
+  const getData = async () => {
+    console.log(id)
+    await axios.get("http://43.202.127.16:8080/api/v1/posts/my",{
+      headers:{
+        'Authorization': id
+      }
+    }
+    ).then((res)=>{
+      console.log(res);
+      setPost(res.data);
+    }).catch((error)=>{
+      console.log(error);
+    })
+  } 
+
+  useEffect(()=>{
+    if(isFocused){
+      fetchData();
     }
   },[isFocused]);
 
