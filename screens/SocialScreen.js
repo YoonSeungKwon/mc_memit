@@ -5,7 +5,8 @@ import Header from './hook/Header';
 import MasonryList from '@react-native-seoul/masonry-list';
 import axios from 'axios';
 import { useIsFocused } from '@react-navigation/native';
-import { FlatList, ActivityIndicator } from 'react-native';
+import { FlatList, ActivityIndicator, Text } from 'react-native';
+
 
 
 const SocialScreen = ({ navigation }) => {
@@ -74,6 +75,12 @@ const SocialScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Header navigation={navigation} setNumColumns={setNumColumns}/>
+      {visiblePosts.length === 0 && !loading && (
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyText}>No posts available</Text>
+        </View>
+      )}
+        
         <FlatList
           data={visiblePosts}
           key={numColumns} 
@@ -82,7 +89,7 @@ const SocialScreen = ({ navigation }) => {
           renderItem={({ item }) => (
             <View style={styles.photoItem}>
             <TouchableOpacity onPress={() => handlePress(item)}>
-                <Image source={{ uri: item.file }} style={styles.image} />
+              <Image source={{ uri: item.file }} style={styles.image} />
             </TouchableOpacity>
             </View>
           )}
@@ -118,6 +125,11 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     resizeMode: 'cover',
     borderRadius: 10, // 사진 모서리 둥글게
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
