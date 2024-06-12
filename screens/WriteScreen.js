@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Image, KeyboardAvoidingView, Platform, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { Image, Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import Modal from 'react-native-modal'; // Import Modal
 import { StatusBar } from 'expo-status-bar';
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const WriteScreen = ({navigation}) => {
 
