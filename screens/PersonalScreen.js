@@ -74,7 +74,7 @@ const SocialScreen = ({ navigation }) => {
 
   const handleRefresh = () => {
     setRefreshing(true);
-    fetchPosts();
+    fetchData();
   };
 
   return (

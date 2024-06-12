@@ -11,6 +11,14 @@ const Header = ({navigation, setNumColumns}) => {
         <Button title="2" onPress={() => setNumColumns(2)} />
         <Button title="3" onPress={() => setNumColumns(3)} />
       </View>
+
+      <TouchableOpacity 
+        style={styles.button}
+        onPress={() => navigation.navigate('ChatScreen')}
+      >
+        <Text style={styles.buttonText}>침</Text>
+      </TouchableOpacity>
+
       <View style={styles.textContainer}>
         <Text style={styles.headerText}>Personal Page</Text>
       </View>
