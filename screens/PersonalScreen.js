@@ -33,20 +33,6 @@ const SocialScreen = ({ navigation }) => {
     }
   }
 
-  const getData = async () => {
-    console.log(id)
-    await axios.get("http://43.202.127.16:8080/api/v1/posts/my",{
-      headers:{
-        'Authorization': id
-      }
-    }
-    ).then((res)=>{
-      console.log(res);
-      setPost(res.data);
-    }).catch((error)=>{
-      console.log(error);
-    })
-  } 
 
   useEffect(()=>{
     if(isFocused){
