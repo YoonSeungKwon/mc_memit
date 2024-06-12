@@ -1,31 +1,121 @@
-import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect, useState } from 'react';
 import { View, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import Footer from './hook/Footer';
+import * as ImagePicker from 'expo-image-picker';
+import axios from 'axios';
 
-const SettingScreen = () => {
+const SettingScreen = ({navigation}) => {
+
+  const [id, setId] = useState("");
+  const [name, setName] = useState("");
+  const [file, setFile] = useState("");
+  const [profile, setProfile] = useState("");
+  const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
+
+  useEffect(()=>{
+    fetchData();
+  }, [])
+
+
+  const fetchData = async() =>{
+    try{
+      const fetchId = await AsyncStorage.getItem("id");
+      const fetchName = await AsyncStorage.getItem("nickname");
+      const fetchProfile = await AsyncStorage.getItem("profile");
+      setId(fetchId)
+      setName(fetchName)
+      setProfile(fetchProfile)
+    }catch(error){
+      console.log(error);
+    }
+  }
+
+  const hanldeLogout = async() =>{
+    await AsyncStorage.clear();
+    navigation.navigate("SplashScreen")
+  }
+
+  const handleProfileChange = async() => {
+    const name = file.uri.split('/').pop();
+    const type = file.mimeType || 'image/jpeg';
+
+    const formData = new FormData();
+
+    formData.append("file", {uri:file.uri, name:name, type:type})
+
+    await axios.post("http://43.202.127.16:8080/api/v1/members/profile", formData, {
+      headers:{
+        'Authorization':id,
+        'Content-Type':'multipart/form-data'
+      }
+    }).then((res)=>{
+      console.log(res)
+      saveData(res)
+    }).catch((error)=>{
+      console.log(error)
+    })
+
+  }
+
+  const handleProfile = async () => {
+    if(!status?.granted){
+        const permission = await requestPermission();
+        if(!permission.granted){
+            return null;
+        }
+    }
+
+    const response = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: false,
+        quality: 1,
+        aspect: [1,1],
+    });
+    if(response.canceled){
+        console.log("canceled")
+        return;
+    }
+
+    setFile(response.assets[0]);
+    
+    handleProfileChange();
+  }
+
+  const handleNickname = () =>{
+    
+  }
+
+  const saveData = async(response) => {
+    await AsyncStorage.setItem("id", response.data.id);
+    await AsyncStorage.setItem("nickname", response.data.nickname);
+    await AsyncStorage.setItem("profile", response.data.profile);
+    fetchData();
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.userContainer}>
-        <Image source={require('../assets/images/image01.jpg')} style={styles.profileImage} />
-        <Text style={styles.nameText}>Nickname  </Text>
+        <Image source={{uri:profile}} style={styles.profileImage} />
+        <Text style={styles.nameText}>{name}</Text>
       </View>
 
 
-      <TouchableOpacity style={styles.buttonContainer1}>
-        <Text style={styles.buttonText}>       아이디 변경하기</Text>
-        <Text style={styles.buttonText}>+      </Text>
+      <TouchableOpacity style={styles.buttonContainer1} onPress={handleNickname}>
+        <Text style={styles.buttonText}>아이디 변경하기</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.buttonContainer2}>
-        <Text style={styles.buttonText}>       프로필 사진 변경하기</Text>
-        <Text style={styles.buttonText}>+      </Text>
+      <TouchableOpacity style={styles.buttonContainer2} onPress={handleProfile}>
+        <Text style={styles.buttonText}>프로필 사진 변경하기</Text>
       </TouchableOpacity>
 
-      <View style={styles.spacer} /> {/* Add this view as a flexible spacer */}
+      <View style={styles.spacer}></View>
 
-      <TouchableOpacity style={styles.buttonContainer3}>
-        <Text style={styles.buttonText}>       로그아웃</Text>
-        <Text style={styles.buttonText}>+       </Text>
+      <TouchableOpacity style={styles.buttonContainer3} onPress={hanldeLogout}>
+        <Text style={styles.buttonText}>로그아웃</Text>
       </TouchableOpacity>
+
+      <Footer navigation={navigation}/>
     </View>
   );
 };
