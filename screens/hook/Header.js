@@ -1,10 +1,16 @@
 import React from 'react';
-import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, View, Text, StyleSheet, Button } from 'react-native';
 import { router } from 'expo-router';
 
-const Header = ({navigation}) => {
+const Header = ({navigation, setNumColumns}) => {
   return (
     <View style={styles.Headercontainer}>
+      
+      <View style={styles.buttonsContainer}> 
+        <Button title="1" onPress={() => setNumColumns(1)} />
+        <Button title="2" onPress={() => setNumColumns(2)} />
+        <Button title="3" onPress={() => setNumColumns(3)} />
+      </View>
       <View style={styles.textContainer}>
         <Text style={styles.headerText}>Personal Page</Text>
       </View>
@@ -28,6 +34,10 @@ const styles = StyleSheet.create({
     display: "flex",
     borderWidth: 1, 
     borderColor: '#86AAED',
+  },
+  buttonsContainer: { // New style for buttons container
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
   },
   textContainer: {
     flex: 1,

@@ -8,11 +8,13 @@ import WriteScreen from './screens/WriteScreen';
 import SettingScreen from './screens/SettingScreen';
 import PersonalScreen from './screens/PersonalScreen';
 import RegisterScreen from './screens/RegisterScreen';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const Stack = createStackNavigator();
 
 const App = () => {
   return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
     <NavigationContainer>
       <Stack.Navigator initialRouteName='SplashScreen'>
         <Stack.Screen name="PersonalScreen" component={PersonalScreen} options={{headerShown:false}}/>
@@ -24,6 +26,7 @@ const App = () => {
         <Stack.Screen name="RegisterScreen" component={RegisterScreen} options={{headerShown:false}}/>
       </Stack.Navigator>
     </NavigationContainer>
+    </GestureHandlerRootView>
   );
 };
 

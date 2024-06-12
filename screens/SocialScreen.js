@@ -5,24 +5,56 @@ import Header from './hook/Header';
 import MasonryList from '@react-native-seoul/masonry-list';
 import axios from 'axios';
 import { useIsFocused } from '@react-navigation/native';
+import { FlatList, ActivityIndicator } from 'react-native';
+
 
 const SocialScreen = ({ navigation }) => {
   
   const [post, setPost] = useState([]);
   const isFocused = useIsFocused();
 
+  // 점진적 이미지 로딩 - pagination logic
+  const [visiblePosts, setVisiblePosts] = useState([]);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
+  // zoom in and out
+  const [numColumns, setNumColumns] = useState(2);
+
+
+
+  const PAGE_SIZE = 10; // Number of items to load per page
 
   useEffect(()=>{
     if(isFocused){
-      axios.get("http://43.202.127.16:8080/api/v1/posts"
-      ).then((res)=>{
-        console.log(res);
-        setPost(res.data);
-      }).catch((error)=>{
-        console.log(error);
-      })
+      fetchPosts();
     }
   },[isFocused]);
+
+  const fetchPosts = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get("http://43.202.127.16:8080/api/v1/posts");
+      setPost(response.data);
+      setVisiblePosts(response.data.slice(0, PAGE_SIZE));
+      setPage(1);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  const loadMorePosts = () => {
+    if (!loading) {
+      const nextPage = page + 1;
+      const newPosts = post.slice(0, nextPage * PAGE_SIZE);
+      setVisiblePosts(newPosts);
+      setPage(nextPage);
+    }
+  };
 
   const handlePress = async (item) => {
 
@@ -33,21 +65,33 @@ const SocialScreen = ({ navigation }) => {
     });
   };
 
+  const handleRefresh = () => {
+    setRefreshing(true);
+    fetchPosts();
+  };
+
+
   return (
     <SafeAreaView style={styles.container}>
-      <Header navigation={navigation}/>
-      <MasonryList
-        data={post}
-        keyExtractor={(item) => item.postIdx.toString()}
-        numColumns={2}
-        renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => handlePress(item)}>
+      <Header navigation={navigation} setNumColumns={setNumColumns}/>
+        <FlatList
+          data={visiblePosts}
+          key={numColumns} 
+          keyExtractor={(item) => item.postIdx.toString()}
+          numColumns={numColumns}
+          renderItem={({ item }) => (
             <View style={styles.photoItem}>
-              <Image source={{uri:item.file}} style={styles.image} />
+            <TouchableOpacity onPress={() => handlePress(item)}>
+                <Image source={{ uri: item.file }} style={styles.image} />
+            </TouchableOpacity>
             </View>
-          </TouchableOpacity>
-        )}
-      />
+          )}
+          ListFooterComponent={loading ? <ActivityIndicator size="large" /> : null}
+          onEndReached={loadMorePosts}
+          onEndReachedThreshold={0.5}
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
+        />
       <Footer navigation={navigation}/>
     </SafeAreaView>
   );
@@ -56,6 +100,7 @@ const SocialScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: 'column',
     marginTop: 5,
     marginBottom: 5,
   },
