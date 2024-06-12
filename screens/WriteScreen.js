@@ -4,6 +4,7 @@ import * as ImagePicker from "expo-image-picker";
 import Modal from 'react-native-modal'; // Import Modal
 import { StatusBar } from 'expo-status-bar';
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const WriteScreen = ({navigation}) => {
 
