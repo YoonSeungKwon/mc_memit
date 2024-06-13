@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { TouchableOpacity, View, Text, StyleSheet, Button, Image } from 'react-native';
-import { router } from 'expo-router';
+import React, {useState } from 'react';
+import { TouchableOpacity, View, Text, StyleSheet, Image } from 'react-native';
 import grid1 from '../../assets/images/grid1.png';
 import grid2 from '../../assets/images/grid2.png';
 import grid3 from '../../assets/images/grid3.png';
+import logo from '../../assets/images/logo1.png';
 
 
 const Header = ({navigation, setNumColumns}) => {
@@ -34,19 +34,25 @@ const Header = ({navigation, setNumColumns}) => {
       
       <View style={styles.buttonsContainer}>
         <TouchableOpacity onPress={handleGrid}> 
-          <Image source={grid} style={{width:20, height:20, marginLeft:20}}/>
+          <Image source={grid} style={{width:22, height:22, marginLeft:10, marginTop:10}}/>
+        </TouchableOpacity>
+        <TouchableOpacity 
+          style={styles.PageButtons}
+          onPress={()=>navigation.navigate('PersonalScreen')}>
+          <Text style={styles.PageText}>MyPage</Text>
         </TouchableOpacity>
       </View>
 
-      <View style={styles.textContainer}>
-        <Text style={styles.headerText}>Personal Page</Text>
+      <View style={styles.HeadertextContainer}>
+        <Image source={logo} style={{width:50, height:50}}/>
       </View>
-      <TouchableOpacity 
-        style={styles.button}
-        onPress={()=>navigation.navigate('SettingScreen')}
-      >
-        <Text style={styles.buttonText}>☰</Text>
-      </TouchableOpacity>
+
+      <View style={styles.buttonsContainer}>
+        <TouchableOpacity 
+          onPress={()=>navigation.navigate('SettingScreen')}>
+          <Text style={styles.buttonText}>☰</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -56,40 +62,52 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     flexDirection: "row",
     alignItems: "center", 
-    justifyContent: "space-between", 
+    justifyContent: "space-between" ,
     height: 50, 
     display: "flex",
     borderWidth: 1, 
-    borderColor: '#86AAED',
+    borderColor: '#f2f1f6',
   },
-  buttonsContainer: { // New style for buttons container
+  buttonsContainer: { // New style for buttons container통일시켰습ㄴ다. 
     flexDirection: 'row',
-    justifyContent: 'flex-start',
   },
-  textContainer: {
-    flex: 1,
-    alignItems: "center",
+  PageButtons:{
+    marginLeft:15,
+    borderWidth:1.5,
+    borderRadius:5,
+    padding:1,
   },
-  headerText: {
-    fontSize: 19,  // 원하는 폰트 크기로 설정하세요
-    fontFamily: 'nanum1',
+  PageText: {
+    fontSize: 17,  // 원하는 폰트 크기로 설정하세요
+    fontFamily: 'Inter',
     color: '#000', // 원하는 폰트 색상으로 설정하세요
   },
-  button: {
-    width: 40, 
-    height: 40, 
-    alignItems: "center", 
-    justifyContent: "center", 
-    borderWidth: 1, 
-    borderRadius: 20, 
-    borderColor: '#86AAED', 
-    backgroundColor: '#fff',
+  HeadertextContainer: {
+    position:'absolute',
+    left:'50%',
+    right:'50%'
+    // marginRight:15,
+    // marginLeft:90,
+    // borderRadius:5,
+    // backgroundColor: '#fec43f',
+    // alignItems: "flex-end",
+    // padding:3,
   },
+  headerText: {
+    alignItems: "flex-end",
+    fontSize: 17,  // 원하는 폰트 크기로 설정하세요
+    fontFamily: 'Inter',
+    color: '#000', // 원하는 폰트 색상으로 설정하세요
+    borderRadius:20,
+  },
+
+  
   buttonText: {
     fontSize: 30, 
-    color: '#86AAED', 
+    color: '#000', 
     height: 35, 
     lineHeight: 35, 
+    fontFamily: 'Inter',
   },
 });
 

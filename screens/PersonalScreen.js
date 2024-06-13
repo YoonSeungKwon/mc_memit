@@ -14,19 +14,13 @@ const SocialScreen = ({ navigation }) => {
   const [post, setPost] = useState([]);
   const isFocused = useIsFocused();
 
-  // 점진적 이미지 로딩 - pagination logic
-  const [visiblePosts, setVisiblePosts] = useState([]);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
-
-  // zoom in and out
   const [numColumns, setNumColumns] = useState(2);
 
   const fetchData = async() =>{
     try{
       const fetchId = await AsyncStorage.getItem("id");
       console.log(id)
+      setId(fetchId)
       await axios.get("http://43.202.127.16:8080/api/v1/posts/my",{
         headers:{
           'Authorization': fetchId
@@ -38,10 +32,6 @@ const SocialScreen = ({ navigation }) => {
       }).catch((error)=>{
         console.log(error);
       })
-
-      setPost(response.data);
-      setVisiblePosts(response.data.slice(0, PAGE_SIZE));
-      setPage(1);
     }catch(error){
       console.log(error);
     }
@@ -56,20 +46,15 @@ const SocialScreen = ({ navigation }) => {
 
   const handlePress = async (item) => {
 
-    await axios.get(`http://43.202.127.16:8080/api/v1/posts/detail/${item.postIdx}`      
+    await axios.get(`http://43.202.127.16:8080/api/v1/posts/detail/${item.postIdx}`, {
+      headers:{
+        Authorization:id
+      }
+    }     
     ).then((res)=>{
       console.log(res);
       navigation.navigate('DetailScreen', {image: res.data});
     });
-  };
-
-  const loadMorePosts = () => {
-    if (!loading) {
-      const nextPage = page + 1;
-      const newPosts = post.slice(0, nextPage * PAGE_SIZE);
-      setVisiblePosts(newPosts);
-      setPage(nextPage);
-    }
   };
 
   const handleRefresh = () => {
@@ -80,13 +65,13 @@ const SocialScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Header navigation={navigation} setNumColumns={setNumColumns}/>
-        {visiblePosts.length === 0 && !loading && (
+        {post.length === 0 && (
           <View style={styles.emptyContainer}>
             <Text style={styles.emptyText}>당신 왜 사진을 올리지 않았지?</Text>
           </View>
         )}
         <FlatList
-            data={visiblePosts}
+            data={post}
             key={numColumns} 
             keyExtractor={(item) => item.postIdx.toString()}
             numColumns={numColumns}
@@ -97,11 +82,7 @@ const SocialScreen = ({ navigation }) => {
               </TouchableOpacity>
               </View>
             )}
-            ListFooterComponent={loading ? <ActivityIndicator size="large" /> : null}
-            onEndReached={loadMorePosts}
             onEndReachedThreshold={0.5}
-            refreshing={refreshing}
-            onRefresh={handleRefresh}
           />
       <Footer navigation={navigation}/>
     </SafeAreaView>

@@ -115,10 +115,9 @@ const SocialScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor:'#fff',
     flex: 1,
     flexDirection: 'column',
-    marginTop: 5,
-    marginBottom: 5,
   },
   photoItem: {
     //backgroundColor: '#ff3c00',

@@ -42,7 +42,6 @@ const WriteScreen = ({navigation}) => {
             },
         }).then((res)=>{
             console.log(res);
-            alert("글을 등록하였습니다.")
             setModalVisible(false);
             navigation.navigate("SocialScreen");
         }).catch((error)=>{

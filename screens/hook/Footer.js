@@ -1,33 +1,50 @@
-import { Button, Pressable, TouchableHighlight, TouchableOpacity, View, Text } from "react-native";
+import {TouchableOpacity, View, Image, StyleSheet } from "react-native";
+import Ai from "../../assets/images/ai-icon.png";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 const Footer = ({navigation}) =>{
 
     return(
-        <View style={{flexDirection:"row",alignItems:"center", justifyContent:"center", height:50, position:"fixed", bottom:0, backgroundColor:"#fff", width:"100%"}}>
-            <TouchableOpacity style={{width:120, height:30 , alignItems:"center", justifyContent:"center", borderWidth:1, borderRadius: 20, borderColor:'#86AAED', backgroundColor:'#FBFCBB'}}
-                onPress={()=>navigation.navigate('PersonalScreen')}
-            >
-                <Text style={{fontSize:24, color:'#86AAED', height:30, lineHeight:30, fontFamily:'nanum1'}}>
-                    Personal
-                </Text>
+        <View style={{flexDirection:"row",alignItems:"center", justifyContent:"space-evenly", height:50, position:"fixed", bottom:0, backgroundColor:"#fff", width:"100%"}}>
+            
+            <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate('SocialScreen')}>
+                    <FontAwesome name="globe" size={27} color="#000" />
             </TouchableOpacity> 
-            <TouchableOpacity style={{width:30, height:30, alignItems:"center", justifyContent:"center", borderRadius: 45, marginLeft:15, marginRight:15, backgroundColor:'#86AAED'}}
-                onPress={()=>navigation.navigate('WriteScreen')}
-            >
-                <Text style={{fontSize:20, color:'#ffffff', height:30, lineHeight:30}}>
-                    +
-                </Text>
+           
+            <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate('WriteScreen')}>
+                    <FontAwesome name="plus-square" size={27} color="#000" />
             </TouchableOpacity>
-            <TouchableOpacity style={{width:120, height:30 , alignItems:"center", justifyContent:"center", borderWidth:1, borderRadius: 20, borderColor:'#86AAED', backgroundColor:'#FBFCBB'}}
-                onPress={()=>navigation.navigate('SocialScreen')}
-            >
-                <Text style={{fontSize:24, color:'#86AAED', height:30, lineHeight:30, fontFamily:'nanum1'}}>
-                    Social  
-                </Text>
+            
+            <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate('SocialScreen')}>
+                    <Image source={Ai} style={{width:45, height:45}}/>
             </TouchableOpacity>
+
         </View>
     );
 
 }
+
+const styles = StyleSheet.create({
+    image: {
+        width: 27, // 아이콘 크기와 맞추기 위해 이미지 크기를 조정하세요.
+        height: 27,
+        resizeMode: 'contain',
+    },
+
+    button: {
+      width: 40,
+      height: 40,
+      alignItems: "center",
+      justifyContent: "center",
+  
+    },
+    buttonText: {
+      fontSize: 35,
+      color: '#86AAED',
+      height: 35,
+      lineHeight: 35,
+      fontFamily: 'Inter',
+    },
+});
 
 export default Footer;

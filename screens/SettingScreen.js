@@ -4,6 +4,7 @@ import { View, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import Footer from './hook/Footer';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
+import FontAwesome from "@expo/vector-icons/FontAwesome"
 
 const SettingScreen = ({navigation}) => {
 
@@ -94,146 +95,126 @@ const SettingScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.userContainer}>
-        <Image source={{uri:profile}} style={styles.profileImage} />
-        <Text style={styles.nameText}>{name}</Text>
-      </View>
+            <View style={styles.textContainer}>
+              <Text style={styles.headerText}>MeMit</Text>
+             </View>
 
-
-      <TouchableOpacity style={styles.buttonContainer1} onPress={handleNickname}>
+      <View style={styles.contentContainer}>
+        <View style={styles.userContainer}>
+          <Image source={{uri:profile}} style={styles.profileImage} />
+          <Text style={styles.nameText}>{name}</Text>
+          
+        </View>
+      
+      <TouchableOpacity style={styles.Edit_buttonContainer} onPress={handleNickname}>
         <Text style={styles.buttonText}>아이디 변경하기</Text>
+        <FontAwesome name="angle-right" size={27} color="#000" />
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.buttonContainer2} onPress={handleProfile}>
+      <TouchableOpacity style={styles.Edit_buttonContainer} onPress={handleProfile}>
         <Text style={styles.buttonText}>프로필 사진 변경하기</Text>
+        <FontAwesome name="angle-right" size={27} color="#000" />
       </TouchableOpacity>
 
+      <TouchableOpacity style={styles.Edit_buttonContainer} onPress={hanldeLogout}>
+        <Text style={styles.buttonText}>로그아웃</Text>
+        <FontAwesome name="sign-out" size={27} color="#000" />
+      </TouchableOpacity>
+      
       <View style={styles.spacer}></View>
 
-      <TouchableOpacity style={styles.buttonContainer3} onPress={hanldeLogout}>
-        <Text style={styles.buttonText}>로그아웃</Text>
-      </TouchableOpacity>
-
       <Footer navigation={navigation}/>
+      </View>
+
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  /* all container */
   container: {
-    flex: 1,
-    //marginTop: 5,
-    justifyContent: 'space-between', // Ensure space between header/content and footer
-    paddingVertical: 10,
+  backgroundColor: '#fec43f',
+  flex: 1,
+  alignItems: 'center',
+  //marginTop: 5,
+  justifyContent: 'space-between', // Ensure space between header/content and footer
+  },
+
+    /* header container */
+  textContainer:{
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-around',
+  marginTop: 90,
+  marginBottom: 20,
+
+  },
+  headerText:{
+  color: '#000',
+  fontSize: 22,
+  fontWeight: 'bold',
+  },
+
+      /* user container */
+  contentContainer:{
+
+  marginTop: 20,
+  paddingVertical: 20,
+  flex:1,
+  width: '100%',
+  backgroundColor: '#fff',
+  alignItems: 'center',
+  borderRadius: 40,
   },
 
   userContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    marginTop: 2,
-    marginBottom: 5,
-    backgroundColor: '#FFFFBF',
-    height: 200, // 원하는 높이 값 (예: 60)
-    borderRadius: 5,
-  },
-  
-  buttonContainer1: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 5,
-    height: 60,
-    backgroundColor: '#F6D8CE',
-  },
-  buttonContainer2: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 5,
-    marginBottom: 40,
-    height: 60,
-    backgroundColor: '#F6D8CE',
-  },
-  buttonContainer3: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 5,
-    marginBottom: 2,
-    height: 60,
-    backgroundColor: '#F6D8CE',
-  },
-
-  footerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 10,
-  },
-
-  nameText: {
-    color: '#93BBDE',
-    fontSize: 30,
-    fontWeight: 'bold',
-  },
-  buttonText: {
-    color: '#93BBDE',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  buttonText1: {
-    color: '#93BBDE',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  buttonText2: {
-    color: '#FFFFBF',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-
-  button1: {
-    backgroundColor: '#FFFFBF',
-    paddingVertical: 12,
-    paddingHorizontal: 60,
-    borderRadius: 15,
-    borderWidth: 1, // 테두리의 두께
-    borderColor: '#93BBDE', // 테두리의 색상
-  },
-  button2: { //배경블루
-    backgroundColor: '#93BBDE',
-    paddingVertical: 12,
-    paddingHorizontal: 18,
-    borderRadius: 50,
-    borderWidth: 1, // 테두리의 두께
-    borderColor: '#FFFFBF', // 테두리의 색상
-  },
-
-  spacer: {
-    flex: 1, // This view will take up the remaining space
+  width: '90%',
+  padding: 10,
+  marginBottom: 20,
+  flexDirection: 'row',
+  alignItems: 'center',
+  borderRadius: 30,
   },
 
   profileImage: {
-    width: 120,
-    height: 120,
-    borderRadius: 60, // Make the image circular
+  width: 45,
+  height: 45,
+  borderRadius: 60, // Make the image circular
   },
-  photoItem: {
-    flex: 1,
-    margin: 3,
-    borderRadius: 18,
-    overflow: 'hidden',
-  },
-  image: {
-    width: '100%',
-    height: undefined,
-    aspectRatio: 1,
-    resizeMode: 'cover',
-    borderRadius: 10,//사진 모서리 둥글게
-  },
-});
 
+  nameText: {
+  color: '#000',
+  fontSize: 23,
+  fontWeight: 'bold',
+  paddingLeft:20,
+  },
+
+      /* button container */
+  Edit_buttonContainer: {
+  width: '90%',
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  paddingRight: 20, // Added padding
+  marginTop: 2,
+  //marginBottom: 2,
+  height: 70,
+  borderRadius: 15,
+  borderWidth: 0.8,
+  borderColor:'#f2f1f6',
+  },
+
+  buttonText: {
+  color: '#000',
+  fontFamily: 'Inter',
+  fontSize: 16,
+  fontWeight: '400',
+  padding: 20,
+  },
+
+  spacer: {
+  flex: 1, // This view will take up the remaining space
+  },
+
+});
 export default SettingScreen;
