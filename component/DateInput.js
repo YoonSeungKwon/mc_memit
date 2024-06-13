@@ -30,7 +30,6 @@ const DateInput = ({ id, idx, date, name, content, profile, liked, setLiked, isE
         <TextInput
           style={styles.nameText}
           value={name}
-          placeholder="Name"
           editable={false}
         />
         <TouchableOpacity style={{position:'absolute', right:10, top:10}} onPress={handleLike}>
@@ -68,9 +67,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   nameText: {
-    fontWeight: 'bold',
     marginLeft: 50,
     width: '100%',
+    color:'#111',
+    fontFamily:'nanum2',
+    fontSize: 20
   },
   dateText: {
     color: 'gray',
@@ -78,10 +79,14 @@ const styles = StyleSheet.create({
     fontSize: 10,
     width: '100%',
     marginBottom: 5,
+    fontFamily:'nanum1'
   },
   contentText: {
     marginTop: 5,
     width: '100%',
+    fontFamily:'nanum2',
+    color:'#111',
+    fontSize:15
   },
 });
 

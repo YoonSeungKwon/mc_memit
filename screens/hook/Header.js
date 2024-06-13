@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, View, Text, StyleSheet, Button, Image } from 'react-native';
 import { router } from 'expo-router';
 import grid1 from '../../assets/images/grid1.png';
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 19,  // 원하는 폰트 크기로 설정하세요
-    fontFamily: 'Inter',
+    fontFamily: 'nanum1',
     color: '#000', // 원하는 폰트 색상으로 설정하세요
   },
   button: {
@@ -90,7 +90,6 @@ const styles = StyleSheet.create({
     color: '#86AAED', 
     height: 35, 
     lineHeight: 35, 
-    fontFamily: 'Inter',
   },
 });
 

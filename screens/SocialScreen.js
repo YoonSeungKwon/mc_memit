@@ -9,9 +9,9 @@ import { FlatList, ActivityIndicator, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-
 const SocialScreen = ({ navigation }) => {
-  
+
+
   const [id, setId] = useState(null);
   const [post, setPost] = useState([]);
   const isFocused = useIsFocused();

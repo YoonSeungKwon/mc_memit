@@ -14,17 +14,17 @@ const DetailScreen = ({ route, navigation }) => {
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(()=>{
+    const fetchData = async() =>{
+      try{
+        const fetchId = await AsyncStorage.getItem("id");
+        setId(fetchId)
+      }catch(error){
+        console.log(error);
+      }
+    }
     fetchData();
   },[]);
 
-  const fetchData = async() =>{
-    try{
-      const fetchId = await AsyncStorage.getItem("id");
-      setId(fetchId)
-    }catch(error){
-      console.log(error);
-    }
-  }
 
   const handleSave = async () => {
     // Save logic here
@@ -71,7 +71,7 @@ const DetailScreen = ({ route, navigation }) => {
                             <Text style={styles.buttonText}>Back</Text>
                 </TouchableOpacity>
               </View>
-              <Text style={styles.headerText}>{image.writer} image!</Text>
+              <Text style={styles.headerText}>{image.writer}'s image!</Text>
               <Image
                 source={{uri:image.file}}
                 style={styles.image}
@@ -119,9 +119,9 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: '#ffff', // 글자 색 변경
-    fontSize: 18,
+    fontSize: 30,
     fontWeight: 'light',
-    fontFamily: 'Inter',
+    fontFamily: 'nanum2',
   },
   backButtonContainer: {
     alignSelf: 'flex-start',
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     color: '#0075eb', // 글자 색 변경
     fontSize: 18,
     fontWeight: 'bold',
-    fontFamily: 'Inter',
+    fontFamily: 'nanum1',
 },
 });
 

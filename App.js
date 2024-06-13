@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import SocialScreen from './screens/SocialScreen';
@@ -11,16 +11,28 @@ import RegisterScreen from './screens/RegisterScreen';
 import ChatScreen from './screens/ChatScreen';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Accelerometer } from 'expo-sensors';
-
+import * as Font from 'expo-font';
 
 const Stack = createStackNavigator();
 
 const App = () => {
   const navigationRef = React.createRef();
 
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+
   useEffect(() => {
     let lastUpdate = 0;
     let lastX, lastY, lastZ;
+
+    const getFont = async() => {
+      await Font.loadAsync({
+        "nanum1": require('./assets/fonts/nanum1.ttf'),
+        "nanum2": require('./assets/fonts/nanum2.ttf'),
+      })
+      setFontsLoaded(true);
+    }
+
+    getFont();
 
     const subscription = Accelerometer.addListener(accelerometerData => {
       const { x, y, z } = accelerometerData;

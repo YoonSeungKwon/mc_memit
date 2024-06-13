@@ -1,5 +1,4 @@
 import { Button, Pressable, TouchableHighlight, TouchableOpacity, View, Text } from "react-native";
-import {router} from 'expo-router';
 
 const Footer = ({navigation}) =>{
 
@@ -8,7 +7,7 @@ const Footer = ({navigation}) =>{
             <TouchableOpacity style={{width:120, height:30 , alignItems:"center", justifyContent:"center", borderWidth:1, borderRadius: 20, borderColor:'#86AAED', backgroundColor:'#FBFCBB'}}
                 onPress={()=>navigation.navigate('PersonalScreen')}
             >
-                <Text style={{fontSize:14, color:'#86AAED', height:30, lineHeight:30, fontFamily:'Inter'}}>
+                <Text style={{fontSize:24, color:'#86AAED', height:30, lineHeight:30, fontFamily:'nanum1'}}>
                     Personal
                 </Text>
             </TouchableOpacity> 
@@ -22,7 +21,7 @@ const Footer = ({navigation}) =>{
             <TouchableOpacity style={{width:120, height:30 , alignItems:"center", justifyContent:"center", borderWidth:1, borderRadius: 20, borderColor:'#86AAED', backgroundColor:'#FBFCBB'}}
                 onPress={()=>navigation.navigate('SocialScreen')}
             >
-                <Text style={{fontSize:14, color:'#86AAED', height:30, lineHeight:30, fontFamily:'Inter'}}>
+                <Text style={{fontSize:24, color:'#86AAED', height:30, lineHeight:30, fontFamily:'nanum1'}}>
                     Social  
                 </Text>
             </TouchableOpacity>
