@@ -1,5 +1,5 @@
 import React, {useState } from 'react';
-import { TouchableOpacity, View, Text, StyleSheet, Image } from 'react-native';
+import { TouchableOpacity, View, Text, StyleSheet, Image, SafeAreaView } from 'react-native';
 import grid1 from '../../assets/images/grid1.png';
 import grid2 from '../../assets/images/grid2.png';
 import grid3 from '../../assets/images/grid3.png';
@@ -34,25 +34,24 @@ const Header = ({navigation, setNumColumns}) => {
       
       <View style={styles.buttonsContainer}>
         <TouchableOpacity onPress={handleGrid}> 
-          <Image source={grid} style={{width:22, height:22, marginLeft:10, marginTop:10}}/>
-        </TouchableOpacity>
-        <TouchableOpacity 
-          style={styles.PageButtons}
-          onPress={()=>navigation.navigate('PersonalScreen')}>
-          <Text style={styles.PageText}>MyPage</Text>
+          <Image source={grid} style={{width:22, height:22, marginLeft:10}}/>
         </TouchableOpacity>
       </View>
+      <TouchableOpacity 
+        style={styles.PageButtons}
+        onPress={()=>navigation.navigate('PersonalScreen')}>
+        <Text style={styles.PageText}>MyPage</Text>
+      </TouchableOpacity>
 
       <View style={styles.HeadertextContainer}>
-        <Image source={logo} style={{width:50, height:50}}/>
+        <Text style={styles.headerText}>MeMit</Text>
       </View>
 
-      <View style={styles.buttonsContainer}>
-        <TouchableOpacity 
-          onPress={()=>navigation.navigate('SettingScreen')}>
-          <Text style={styles.buttonText}>☰</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity 
+        style={styles.buttonsContainer}
+        onPress={()=>navigation.navigate('SettingScreen')}>
+        <Text style={styles.buttonText}>☰</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -83,15 +82,13 @@ const styles = StyleSheet.create({
     color: '#000', // 원하는 폰트 색상으로 설정하세요
   },
   HeadertextContainer: {
-    position:'absolute',
-    left:'50%',
-    right:'50%'
-    // marginRight:15,
-    // marginLeft:90,
-    // borderRadius:5,
-    // backgroundColor: '#fec43f',
-    // alignItems: "flex-end",
-    // padding:3,
+    flex: 1,
+    marginRight:15,
+    marginLeft:90,
+    borderRadius:5,
+    backgroundColor: '#fec43f',
+    alignItems: "flex-end",
+    padding:3,
   },
   headerText: {
     alignItems: "flex-end",
@@ -110,5 +107,4 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter',
   },
 });
-
 export default Header;
