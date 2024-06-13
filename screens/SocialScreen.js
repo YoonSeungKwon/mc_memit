@@ -6,11 +6,13 @@ import MasonryList from '@react-native-seoul/masonry-list';
 import axios from 'axios';
 import { useIsFocused } from '@react-navigation/native';
 import { FlatList, ActivityIndicator, Text } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
 const SocialScreen = ({ navigation }) => {
   
+  const [id, setId] = useState(null);
   const [post, setPost] = useState([]);
   const isFocused = useIsFocused();
 
@@ -36,6 +38,8 @@ const SocialScreen = ({ navigation }) => {
   const fetchPosts = async () => {
     setLoading(true);
     try {
+      const fetchId = await AsyncStorage.getItem("id");
+      setId(fetchId);
       const response = await axios.get("http://43.202.127.16:8080/api/v1/posts");
       setPost(response.data);
       setVisiblePosts(response.data.slice(0, PAGE_SIZE));
@@ -59,7 +63,11 @@ const SocialScreen = ({ navigation }) => {
 
   const handlePress = async (item) => {
 
-    await axios.get(`http://43.202.127.16:8080/api/v1/posts/detail/${item.postIdx}`      
+    await axios.get(`http://43.202.127.16:8080/api/v1/posts/detail/${item.postIdx}`, {
+      headers:{
+        "Authorization":id
+      }
+    }      
     ).then((res)=>{
       console.log(res);
       navigation.navigate('DetailScreen', {image: res.data});
@@ -90,6 +98,7 @@ const SocialScreen = ({ navigation }) => {
             <View style={styles.photoItem}>
             <TouchableOpacity onPress={() => handlePress(item)}>
               <Image source={{ uri: item.file }} style={styles.image} />
+              <Text style={{position:"absolute", bottom:5,right:5, color:"red"}}>{item.like}♥</Text>
             </TouchableOpacity>
             </View>
           )}

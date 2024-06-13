@@ -36,7 +36,7 @@ const SettingScreen = ({navigation}) => {
     navigation.navigate("SplashScreen")
   }
 
-  const handleProfileChange = async() => {
+  const handleProfileChange = async(file) => {
     const name = file.uri.split('/').pop();
     const type = file.mimeType || 'image/jpeg';
 
@@ -75,11 +75,10 @@ const SettingScreen = ({navigation}) => {
     if(response.canceled){
         console.log("canceled")
         return;
-    }
-
-    setFile(response.assets[0]);
-    
-    handleProfileChange();
+    }else{
+      setFile(response.assets[0]);
+      handleProfileChange(response.assets[0]);
+    }    
   }
 
   const handleNickname = () =>{

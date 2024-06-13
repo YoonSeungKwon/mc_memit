@@ -3,14 +3,28 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, Button, TouchableOpacity } from 'react-native';
 import DateInput from '../component/DateInput'; // DateInput 컴포넌트를 불러옵니다.
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DetailScreen = ({ route, navigation }) => {
+
+  const [id, setId] = useState(null);
   const { image } = route.params;
+  const [liked, setLiked] = useState(image.liked);
   const [content, setContent] = useState(image.content);
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(()=>{
+    fetchData();
   },[]);
+
+  const fetchData = async() =>{
+    try{
+      const fetchId = await AsyncStorage.getItem("id");
+      setId(fetchId)
+    }catch(error){
+      console.log(error);
+    }
+  }
 
   const handleSave = async () => {
     // Save logic here
@@ -20,7 +34,7 @@ const DetailScreen = ({ route, navigation }) => {
 
     axios.put(`http://43.202.127.16:8080/api/v1/posts/${image.postIdx}`, data, {
       headers:{
-        'Authorization':'test'
+        'Authorization':id
       }
     }).then((res)=>{
       console.log(res.data)
@@ -64,10 +78,15 @@ const DetailScreen = ({ route, navigation }) => {
               />
               <View style={styles.textBox}>
                 <DateInput 
+                  id = {id}
+                  idx = {image.postIdx}
                   date={image.createAt}
+                  profile={image.profile}
                   name={image.writer} 
+                  liked={liked}
                   content={content} 
-                  setContent={setContent} 
+                  setContent={setContent}
+                  setLiked={setLiked} 
                   isEditing={isEditing} 
                   setIsEditing={setIsEditing} 
                 />
