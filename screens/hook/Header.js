@@ -1,23 +1,42 @@
-import React from 'react';
-import { TouchableOpacity, View, Text, StyleSheet, Button } from 'react-native';
+import React, { useState } from 'react';
+import { TouchableOpacity, View, Text, StyleSheet, Button, Image } from 'react-native';
 import { router } from 'expo-router';
+import grid1 from '../../assets/images/grid1.png';
+import grid2 from '../../assets/images/grid2.png';
+import grid3 from '../../assets/images/grid3.png';
+
 
 const Header = ({navigation, setNumColumns}) => {
+
+  const [num, setNum] = useState(2);
+  const [grid, setGrid] = useState(grid3);
+
+  const handleGrid = () => {
+    if(num==1){
+      setNum(2);
+      setNumColumns(2);
+      setGrid(grid3)
+    }
+    else if(num==2){
+      setNum(3);
+      setNumColumns(3);
+      setGrid(grid1)
+    }
+    else{
+      setNum(1);
+      setNumColumns(1);
+      setGrid(grid2);
+    }
+  }
+
   return (
     <View style={styles.Headercontainer}>
       
-      <View style={styles.buttonsContainer}> 
-        <Button title="1" onPress={() => setNumColumns(1)} />
-        <Button title="2" onPress={() => setNumColumns(2)} />
-        <Button title="3" onPress={() => setNumColumns(3)} />
+      <View style={styles.buttonsContainer}>
+        <TouchableOpacity onPress={handleGrid}> 
+          <Image source={grid} style={{width:20, height:20, marginLeft:20}}/>
+        </TouchableOpacity>
       </View>
-
-      <TouchableOpacity 
-        style={styles.button}
-        onPress={() => navigation.navigate('ChatScreen')}
-      >
-        <Text style={styles.buttonText}>침</Text>
-      </TouchableOpacity>
 
       <View style={styles.textContainer}>
         <Text style={styles.headerText}>Personal Page</Text>
