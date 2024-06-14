@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { View, Image, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
 import Footer from './hook/Footer';
 import Header from './hook/Header';
-import MasonryList from '@react-native-seoul/masonry-list';
 import axios from 'axios';
 import { useIsFocused } from '@react-navigation/native';
 import { FlatList, ActivityIndicator, Text } from 'react-native';
@@ -98,7 +97,13 @@ const SocialScreen = ({ navigation }) => {
             <View style={styles.photoItem}>
             <TouchableOpacity onPress={() => handlePress(item)}>
               <Image source={{ uri: item.file }} style={styles.image} />
-              <Text style={{position:"absolute", bottom:5,right:5, color:"red"}}>{item.like}♥</Text>
+              <View style={styles.userContainer}>
+                  {/* <FontAwesome name="ellipsis-h" size={18} color="#000" /> */}
+                  <View style={styles.usertextContainer}>
+                    <Text style={styles.usertext}>view ▸ </Text>
+                  </View>  
+                <Text style={{position:"absolute", bottom:2,right:5, color:"red"}}>{item.like}♥</Text>
+              </View>
             </TouchableOpacity>
             </View>
           )}
@@ -115,16 +120,40 @@ const SocialScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor:'#fff',
+    backgroundColor: '#fff',
     flex: 1,
     flexDirection: 'column',
   },
   photoItem: {
-    //backgroundColor: '#ff3c00',
+    backgroundColor: '#f6f6f6',
     flex: 1,
     margin: 3,
-    borderRadius: 18,
+    borderRadius: 16,
     overflow: 'hidden',
+  },
+  emptyText: {
+    margin: 3,
+    fontSize: 3,
+  },
+  userContainer:{
+    justifyContent: 'center',
+    marginTop: 2,
+    height:25,
+    margin: 3,
+    borderRadius: 10,
+  },
+  usertextContainer:{
+    width:75,
+    //borderWidth:0.8,
+    //borderRadius:8,
+    alignItems: "center",
+    padding:1,
+  },
+  usertext:{
+    fontSize: 13,  // 원하는 폰트 크기로 설정하세요
+    fontFamily: 'Inter',
+    color: '#000', 
+    fontWeight:"bold"
   },
   image: {
     //backgroundColor: '#ff3c00',
@@ -134,11 +163,7 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     borderRadius: 10, // 사진 모서리 둥글게
   },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+
 });
 
 export default SocialScreen;

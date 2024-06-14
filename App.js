@@ -12,8 +12,11 @@ import ChatScreen from './screens/ChatScreen';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Accelerometer } from 'expo-sensors';
 import * as Font from 'expo-font';
+import { LogBox } from 'react-native';
 
 const Stack = createStackNavigator();
+
+LogBox.ignoreAllLogs();
 
 const App = () => {
   const navigationRef = React.createRef();

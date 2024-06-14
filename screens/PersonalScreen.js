@@ -8,10 +8,12 @@ import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FlatList, ActivityIndicator, Text } from 'react-native';
 
-const SocialScreen = ({ navigation }) => {
+const PersonalScreen = ({ navigation }) => {
   
   const [id, setId] = useState("");
   const [post, setPost] = useState([]);
+  const [profile, setProfile] = useState("");
+  const [name, setName] = useState("");
   const isFocused = useIsFocused();
 
   const [numColumns, setNumColumns] = useState(2);
@@ -19,8 +21,12 @@ const SocialScreen = ({ navigation }) => {
   const fetchData = async() =>{
     try{
       const fetchId = await AsyncStorage.getItem("id");
+      const fetchName = await AsyncStorage.getItem("nickname");
+      const fetchProfile = await AsyncStorage.getItem("profile");
       console.log(id)
       setId(fetchId)
+      setName(fetchName)
+      setProfile(fetchProfile)
       await axios.get("http://43.202.127.16:8080/api/v1/posts/my",{
         headers:{
           'Authorization': fetchId
@@ -57,19 +63,19 @@ const SocialScreen = ({ navigation }) => {
     });
   };
 
-  const handleRefresh = () => {
-    setRefreshing(true);
-    fetchData();
-  };
 
   return (
     <SafeAreaView style={styles.container}>
       <Header navigation={navigation} setNumColumns={setNumColumns}/>
-        {post.length === 0 && (
+      {post.length === 0 && (
           <View style={styles.emptyContainer}>
-            <Text style={styles.emptyText}>당신 왜 사진을 올리지 않았지?</Text>
+            <Text style={styles.emptyText}>This is my page</Text>
           </View>
         )}
+        <View style={styles.emptyContainer}>
+          <Image source={{uri: profile}} style={styles.profileImage} />
+          <Text style={styles.nameText}>{name}</Text>
+        </View>
         <FlatList
             data={post}
             key={numColumns} 
@@ -79,6 +85,10 @@ const SocialScreen = ({ navigation }) => {
               <View style={styles.photoItem}>
               <TouchableOpacity onPress={() => handlePress(item)}>
                   <Image source={{ uri: item.file }} style={styles.image} />
+                  <View style={styles.userContainer}>
+                    <Text style={styles.usertext}>view ▸ </Text>
+                    <Text style={{position:"absolute", bottom:2,right:5, color:"red"}}>{item.like}♥</Text>
+                  </View>
               </TouchableOpacity>
               </View>
             )}
@@ -94,14 +104,36 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 5,
     marginBottom: 5,
+    backgroundColor: '#fff',
   },
   photoItem: {
-    //backgroundColor: '#ff3c00',
+    backgroundColor: '#f6f6f6',
     flex: 1,
     margin: 3,
-    borderRadius: 18,
+    borderRadius: 16,
     overflow: 'hidden',
   },
+  emptyContainer: {
+    flex: 1,
+    backgroundColor: '#bf1c0d',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  userContainer:{
+    justifyContent: 'center',
+    marginTop: 2,
+    height:25,
+    margin: 3,
+    borderRadius: 10,
+  },
+  usertextContainer:{
+    width:75,
+    //borderWidth:0.8,
+    //borderRadius:8,
+    alignItems: "center",
+    padding:1,
+  },
+
   image: {
     //backgroundColor: '#ff3c00',
     width: '100%',
@@ -110,11 +142,6 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     borderRadius: 10, // 사진 모서리 둥글게
   },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
 });
 
-export default SocialScreen;
+export default PersonalScreen;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Image, Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { Alert, Image, Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import Modal from 'react-native-modal'; // Import Modal
 import { StatusBar } from 'expo-status-bar';
@@ -42,6 +42,7 @@ const WriteScreen = ({navigation}) => {
             },
         }).then((res)=>{
             console.log(res);
+            alert("Done!")
             setModalVisible(false);
             navigation.navigate("SocialScreen");
         }).catch((error)=>{
@@ -96,7 +97,7 @@ const WriteScreen = ({navigation}) => {
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
                 <View style={{ flex: 1, alignItems: 'center', width: '100%' }}>
                     <View style={styles.header}>
-                        <Text>글쓰기</Text>
+                        <Text>Upload Image</Text>
                     </View>
 
                     {/*Content*/}
@@ -116,7 +117,7 @@ const WriteScreen = ({navigation}) => {
                         </View>
 
                     {/*ㄴText*/}
-                        <View style={{flex:1}}>
+                        <View style={{flex:1, width: '100%', backgroundColor: '#fff',borderRadius:10,}}>
                             <TextInput
                                 style={styles.textBox}
                                 value={message}
@@ -155,8 +156,7 @@ const WriteScreen = ({navigation}) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0)',
-        //backgroundColor: '#1f203b',
+        backgroundColor: '#eee',
         alignItems: 'center',
     },
     header: {
@@ -169,9 +169,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     utilBox: {
-
         flex: 1.2,
-        flexDirection: 'row-reverse'
+        flexDirection: 'row'
     },
     button: {
         width: 200,
@@ -192,7 +191,7 @@ const styles = StyleSheet.create({
         flex: 1,
         width: 300,
         borderWidth: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+        backgroundColor: '#989898',
         borderRadius: 20,
         marginBottom: 10,
         alignItems: 'center',
@@ -203,12 +202,10 @@ const styles = StyleSheet.create({
         height: '100%',
         borderRadius: 20,
     },
-    textBoxContainer: {
+    textBox: {
         backgroundColor: 'white',
         width: 300,
-        padding: 0,
-        borderRadius: 10,
-        marginTop: 10,
+        padding: 10,
         borderRadius: 10,
         marginBottom: 10,
     },

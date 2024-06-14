@@ -26,21 +26,27 @@ const DateInput = ({ id, idx, date, name, content, profile, liked, setLiked, isE
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
-        <Image style={{width:50, height:50, borderRadius:45, position:'absolute', top: 15}} source={{uri:profile}} />
+      <View style={styles.userContainer}>
+        <Image style={{left:0 ,width:35, height:35, borderRadius:45}} source={{uri:profile}}/>
         <TextInput
           style={styles.nameText}
           value={name}
+          placeholder="Name"
           editable={false}
         />
-        <TouchableOpacity style={{position:'absolute', right:10, top:10}} onPress={handleLike}>
-            <Text style={{fontSize:25}}>{liked?'♥':'♡'}</Text>
+        <TouchableOpacity style={{position:'absolute', right:0,top:18}} onPress={handleLike}>
+            <Text style={{fontSize:27, bottom:2,right:5, color:"red"}}>{liked?'♥':'♡'}</Text>
         </TouchableOpacity>
+
         <TextInput
           style={styles.dateText}
           value={date.substring(0,10)}
           placeholder="Date"
           editable={false}
         />
+
+        </View>
+
         <TextInput
           style={styles.contentText}
           value={content}
@@ -58,35 +64,45 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     alignItems: 'center',
+    //backgroundColor: '#fff',
+
   },
   inputContainer: {
     width: '90%',
-    padding: 10,
-    backgroundColor: '#ffff',
+    backgroundColor: '#fff',
     borderRadius: 10,
-    marginBottom: 10,
+    //marginTop: 10,
+    marginBottom: 20,
+    //padding:20,
+    alignItems: "center", 
+    justifyContent: "space-around" ,
+  },
+  userContainer:{
+    width: '100%',
+    flexDirection: "row",
+    backgroundColor: '#fff',
+    alignItems: "center", 
+    justifyContent: "space-between" ,
+
   },
   nameText: {
-    marginLeft: 50,
+    fontWeight: 'bold',
+    marginTop: 0,
+    marginLeft: 10,
     width: '100%',
-    color:'#111',
-    fontFamily:'nanum2',
-    fontSize: 20
   },
   dateText: {
     color: 'gray',
     marginLeft: 50,
     fontSize: 10,
     width: '100%',
-    marginBottom: 5,
-    fontFamily:'nanum1'
+    marginBottom: 50,
+    
   },
   contentText: {
-    marginTop: 5,
+    //marginTop:5,
+    marginLeft:5,
     width: '100%',
-    fontFamily:'nanum2',
-    color:'#111',
-    fontSize:15
   },
 });
 

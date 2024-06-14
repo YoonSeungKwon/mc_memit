@@ -133,87 +133,88 @@ const SettingScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   /* all container */
   container: {
-  backgroundColor: '#fec43f',
-  flex: 1,
-  alignItems: 'center',
-  //marginTop: 5,
-  justifyContent: 'space-between', // Ensure space between header/content and footer
+    backgroundColor: '#fec43f',
+    flex: 1,
+    alignItems: 'center',
+    //marginTop: 5,
+    justifyContent: 'space-between', // Ensure space between header/content and footer
   },
 
     /* header container */
   textContainer:{
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'space-around',
-  marginTop: 90,
-  marginBottom: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    marginTop: 90,
+    marginBottom: 20,
 
   },
   headerText:{
-  color: '#000',
-  fontSize: 22,
-  fontWeight: 'bold',
+    color: '#000',
+    fontSize: 22,
+    fontWeight: 'bold',
   },
 
       /* user container */
   contentContainer:{
 
-  marginTop: 20,
-  paddingVertical: 20,
-  flex:1,
-  width: '100%',
-  backgroundColor: '#fff',
-  alignItems: 'center',
-  borderRadius: 40,
+    marginTop: 20,
+    paddingVertical: 20,
+    flex:1,
+    width: '100%',
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    borderRadius: 40,
   },
 
   userContainer: {
-  width: '90%',
-  padding: 10,
-  marginBottom: 20,
-  flexDirection: 'row',
-  alignItems: 'center',
-  borderRadius: 30,
+    width: '90%',
+    padding: 10,
+    marginBottom: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 30,
   },
 
   profileImage: {
-  width: 45,
-  height: 45,
-  borderRadius: 60, // Make the image circular
+    width: 45,
+    height: 45,
+    borderRadius: 60, // Make the image circular
   },
 
   nameText: {
-  color: '#000',
-  fontSize: 23,
-  fontWeight: 'bold',
-  paddingLeft:20,
+    color: '#000',
+    fontSize: 23,
+    fontWeight: 'bold',
+    paddingLeft:20,
   },
 
       /* button container */
   Edit_buttonContainer: {
-  width: '90%',
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  paddingRight: 20, // Added padding
-  marginTop: 2,
-  //marginBottom: 2,
-  height: 70,
-  borderRadius: 15,
-  borderWidth: 0.8,
-  borderColor:'#f2f1f6',
+    width: '90%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingRight: 10, // Added padding
+    paddingLeft: 10, 
+    marginTop: 2,
+    //marginBottom: 2,
+    height: 55,
+    borderRadius: 15,
+    borderWidth: 0.8,
+    borderColor:'#f2f1f6',
   },
 
   buttonText: {
-  color: '#000',
-  fontFamily: 'Inter',
-  fontSize: 16,
-  fontWeight: '400',
-  padding: 20,
+    color: '#000',
+    fontFamily: 'Inter',
+    fontSize: 16,
+    fontWeight: '400',
+
   },
 
   spacer: {
-  flex: 1, // This view will take up the remaining space
+    flex: 1, // This view will take up the remaining space
   },
 
 });
