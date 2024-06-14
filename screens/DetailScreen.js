@@ -121,7 +121,6 @@ const styles = StyleSheet.create({
     color: '#ffff', // 글자 색 변경
     fontSize: 30,
     fontWeight: 'light',
-    fontFamily: 'nanum2',
   },
   backButtonContainer: {
     alignSelf: 'flex-start',
@@ -158,7 +157,6 @@ const styles = StyleSheet.create({
     color: '#0075eb', // 글자 색 변경
     fontSize: 18,
     fontWeight: 'bold',
-    fontFamily: 'nanum1',
 },
 });
 

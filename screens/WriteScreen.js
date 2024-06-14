@@ -42,7 +42,7 @@ const WriteScreen = ({navigation}) => {
             },
         }).then((res)=>{
             console.log(res);
-            alert("Done!")
+            Alert.alert("", "Done!")
             setModalVisible(false);
             navigation.navigate("SocialScreen");
         }).catch((error)=>{

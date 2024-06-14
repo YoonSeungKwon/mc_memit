@@ -3,9 +3,6 @@ import { TouchableOpacity, View, Text, StyleSheet, Image } from 'react-native';
 import grid1 from '../../assets/images/grid1.png';
 import grid2 from '../../assets/images/grid2.png';
 import grid3 from '../../assets/images/grid3.png';
-import logo from '../../assets/images/logo1.png';
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Header = ({navigation, setNumColumns}) => {
 
@@ -31,30 +28,29 @@ const Header = ({navigation, setNumColumns}) => {
   }
 
   return (
-    <SafeAreaView style={styles.Headercontainer}>
-      <StatusBar style='auto'/>
+    <View style={styles.Headercontainer}>
+      
       <View style={styles.buttonsContainer}>
-        <TouchableOpacity onPress={handleGrid} style={{justifyContent:'center'}}> 
+        <TouchableOpacity onPress={handleGrid}> 
           <Image source={grid} style={{width:22, height:22, marginLeft:10}}/>
         </TouchableOpacity>
-        <TouchableOpacity 
-          style={styles.PageButtons}
-          onPress={()=>navigation.navigate('PersonalScreen')}>
-          <Text style={styles.PageText}>MyPage</Text>
-        </TouchableOpacity>
       </View>
+      <TouchableOpacity 
+        style={styles.PageButtons}
+        onPress={()=>navigation.navigate('PersonalScreen')}>
+        <Text style={styles.PageText}>MyPage</Text>
+      </TouchableOpacity>
 
-      {/* <View style={styles.HeadertextContainer}>
+      <View style={styles.HeadertextContainer}>
         <Text style={styles.headerText}>MeMit</Text>
-      </View> */}
+      </View>
 
       <TouchableOpacity 
         style={styles.buttonsContainer}
         onPress={()=>navigation.navigate('SettingScreen')}>
         <Text style={styles.buttonText}>☰</Text>
       </TouchableOpacity>
-      <Image source={logo} style={{width:50, height:50, position:'absolute', left:'50%', top: '50%', transform: [{translateX:-15}]}}/>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -62,9 +58,9 @@ const styles = StyleSheet.create({
   Headercontainer: {
     paddingHorizontal: 10,
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "center", 
     justifyContent: "space-between" ,
-    height: '9%', 
+    height: 50, 
     display: "flex",
     borderWidth: 1, 
     borderColor: '#f2f1f6',

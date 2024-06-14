@@ -27,15 +27,15 @@ const App = () => {
     let lastUpdate = 0;
     let lastX, lastY, lastZ;
 
-    const getFont = async() => {
-      await Font.loadAsync({
-        "nanum1": require('./assets/fonts/nanum1.ttf'),
-        "nanum2": require('./assets/fonts/nanum2.ttf'),
-      })
-      setFontsLoaded(true);
-    }
+    // const getFont = async() => {
+    //   await Font.loadAsync({
+    //     "nanum1": require('./assets/fonts/nanum1.ttf'),
+    //     "nanum2": require('./assets/fonts/nanum2.ttf'),
+    //   })
+    //   setFontsLoaded(true);
+    // }
 
-    getFont();
+    // getFont();
 
     const subscription = Accelerometer.addListener(accelerometerData => {
       const { x, y, z } = accelerometerData;

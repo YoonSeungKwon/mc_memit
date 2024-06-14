@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
-import { View, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, Image, StyleSheet, TouchableOpacity, Text, Alert, Modal, TextInput, Button } from 'react-native';
 import Footer from './hook/Footer';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
@@ -10,8 +10,10 @@ const SettingScreen = ({navigation}) => {
 
   const [id, setId] = useState("");
   const [name, setName] = useState("");
+  const [newName, setNewName] = useState(name);
   const [file, setFile] = useState("");
   const [profile, setProfile] = useState("");
+  const [modalVisible, setModalVisible] = useState(false); 
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 
   useEffect(()=>{
@@ -26,6 +28,7 @@ const SettingScreen = ({navigation}) => {
       const fetchProfile = await AsyncStorage.getItem("profile");
       setId(fetchId)
       setName(fetchName)
+      setNewName(fetchName)
       setProfile(fetchProfile)
     }catch(error){
       console.log(error);
@@ -33,8 +36,25 @@ const SettingScreen = ({navigation}) => {
   }
 
   const hanldeLogout = async() =>{
-    await AsyncStorage.clear();
-    navigation.navigate("SplashScreen")
+    Alert.alert(
+      "",
+      "탈퇴하시겠습니까?",
+      [
+        {
+          text: "취소",
+          onPress: () => console.log("취소 클릭됨"),
+          style: "cancel"
+        },
+        {
+          text: "확인",
+          onPress: async () => {
+            await AsyncStorage.clear();
+            navigation.navigate("SplashScreen");
+          }
+        }
+      ],
+      { cancelable: false }
+    );
   }
 
   const handleProfileChange = async(file) => {
@@ -83,7 +103,28 @@ const SettingScreen = ({navigation}) => {
   }
 
   const handleNickname = () =>{
-    
+    axios.post(`http://43.202.127.16:8080/api/v1/members/nickname-check/${newName}`)
+        .then((res)=>{
+            console.log(res.data)
+            if(res.data){
+                Alert.alert('nickname already exist')
+                setNewName(name);
+            }else{
+                const data = {
+                    nickname: newName,
+                }
+                axios.patch('http://43.202.127.16:8080/api/v1/members/update', data ,{
+                  headers:{
+                    Authorization:id
+                  }
+                })
+                .then(async (response)=>{
+                    setName(newName);
+                    await AsyncStorage.setItem("nickname", newName);
+                    setModalVisible(false);
+                });
+            }
+        });
   }
 
   const saveData = async(response) => {
@@ -106,10 +147,36 @@ const SettingScreen = ({navigation}) => {
           
         </View>
       
-      <TouchableOpacity style={styles.Edit_buttonContainer} onPress={handleNickname}>
-        <Text style={styles.buttonText}>아이디 변경하기</Text>
+      <TouchableOpacity style={styles.Edit_buttonContainer} onPress={()=>setModalVisible(true)}>
+        <Text style={styles.buttonText}>이름 변경하기</Text>
         <FontAwesome name="angle-right" size={27} color="#000" />
       </TouchableOpacity>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+        style={styles.modal}
+      >
+        <View style={styles.modalBack}>
+          <View style={styles.modal}>
+            <Text style={{fontSize:20}}>new name</Text>
+            <TextInput
+              style={{height:40, borderRadius: 25, borderColor: '#111', borderWidth: 1, width:'70%', margin:10, padding:10}}
+              value={newName}
+              onChangeText={setNewName}
+            />
+            <View style={{flexDirection:'row'}}>
+              <TouchableOpacity onPress={() => setModalVisible(false)} style={{}}>
+                <Text>취소</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={handleNickname} style={{marginLeft:100}}>
+                <Text>확인</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
 
       <TouchableOpacity style={styles.Edit_buttonContainer} onPress={handleProfile}>
         <Text style={styles.buttonText}>프로필 사진 변경하기</Text>
@@ -117,7 +184,7 @@ const SettingScreen = ({navigation}) => {
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.Edit_buttonContainer} onPress={hanldeLogout}>
-        <Text style={styles.buttonText}>로그아웃</Text>
+        <Text style={styles.buttonText}>탈퇴하기</Text>
         <FontAwesome name="sign-out" size={27} color="#000" />
       </TouchableOpacity>
       
@@ -138,6 +205,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     //marginTop: 5,
     justifyContent: 'space-between', // Ensure space between header/content and footer
+  },
+
+  modalBack:{
+    flex:1,
+    backgroundColor:"rgba(0,0,0,0.5)",
+    justifyContent:'center',
+    alignItems:'center'
+  },
+
+  modal:{
+    width:"70%",
+    height:150,
+    justifyContent:'center',
+    alignItems:'center',
+    backgroundColor:"#fff"
   },
 
     /* header container */
@@ -164,7 +246,8 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#fff',
     alignItems: 'center',
-    borderRadius: 40,
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
   },
 
   userContainer: {
