@@ -69,7 +69,7 @@ const PersonalScreen = ({ navigation }) => {
       <Header navigation={navigation} setNumColumns={setNumColumns}/>
       {post.length === 0 && (
           <View style={styles.emptyContainer}>
-            <Text style={styles.emptyText}>This is my page</Text>
+            {/* <Text style={styles.emptyText}>This is my page</Text> */}
           </View>
         )}
         <View style={styles.emptyContainer}>
@@ -114,10 +114,20 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   emptyContainer: {
-    flex: 1,
-    backgroundColor: '#bf1c0d',
-    justifyContent: 'center',
+    backgroundColor: '#fff',
+    width: '100%',
+    height: '10%',
+    padding: 10,
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'flex-start',
+    borderRadius: 30,
+  },
+  profileImage: {
+    width: 60,
+    height: 60,
+    paddingLeft: 10,
+    borderRadius: 30, // Make the image circular by setting radius to half of width/height
   },
   userContainer:{
     justifyContent: 'center',
@@ -133,7 +143,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding:1,
   },
-
+  nameText: {
+    color: '#000',
+    fontSize: 18,
+    fontWeight: 'medium',
+    paddingLeft: 20,
+  },
   image: {
     //backgroundColor: '#ff3c00',
     width: '100%',
@@ -143,5 +158,6 @@ const styles = StyleSheet.create({
     borderRadius: 10, // 사진 모서리 둥글게
   },
 });
+
 
 export default PersonalScreen;
